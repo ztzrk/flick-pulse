@@ -10,22 +10,23 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: ColorConstant.secondaryColor,
-        clipBehavior: Clip.antiAlias,
-        child: Image.network(
-          'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-          fit: BoxFit.cover,
-          width: double.infinity,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              return child;
-            } else {
-              return const ShimmerPlaceHolder();
-            }
-          },
-          errorBuilder: (context, error, stackTrace) {
+      color: ColorConstant.secondaryColor,
+      clipBehavior: Clip.antiAlias,
+      child: Image.network(
+        'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) {
+            return child;
+          } else {
             return const ShimmerPlaceHolder();
-          },
-        ));
+          }
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return const ShimmerPlaceHolder();
+        },
+      ),
+    );
   }
 }
