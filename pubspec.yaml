@@ -13,11 +13,14 @@ dependencies:
   lottie: ^3.1.2
   shimmer: ^3.0.0
   dio: ^5.7.0
+  envied: ^0.5.4+1
+  envied_generator: ^0.5.4+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  build_runner: ^2.4.13
 
 flutter:
   uses-material-design: true
