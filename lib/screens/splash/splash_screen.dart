@@ -1,7 +1,7 @@
 import 'package:flick_pulse/constant/color_constant.dart';
 import 'package:flick_pulse/constant/lottie_constant.dart';
 import 'package:flick_pulse/constant/spacing_constant.dart';
-import 'package:flick_pulse/screens/home/home_screen.dart';
+import 'package:flick_pulse/screens/movie/movie_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const MovieScreen()),
         );
       }
     });
