@@ -14,6 +14,7 @@ class CustomBottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.movie),
@@ -24,14 +25,18 @@ class CustomBottomNavbar extends StatelessWidget {
           label: 'TV Shows',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
           label: 'Favorites',
         ),
       ],
       currentIndex: currentIndex,
-      selectedItemColor: ColorConstant.selectedTextNavbarColor,
-      unselectedItemColor: ColorConstant.unselectedTextNavbarColor,
-      backgroundColor: ColorConstant.thirdColor,
+      selectedItemColor: ColorConstant.fourthColor,
+      unselectedItemColor: ColorConstant.thirdColor,
+      backgroundColor: ColorConstant.secondaryColor,
       onTap: onTap,
     );
   }
