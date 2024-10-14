@@ -1,39 +1,73 @@
+import 'package:flick_pulse/models/tv_model.dart';
+import 'package:flick_pulse/screens/widgets/custom_choice_chip.dart';
+import 'package:flick_pulse/screens/widgets/custom_circular_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flick_pulse/controllers/tv_controller.dart';
-import 'package:flick_pulse/screens/widgets/custom_circular_progress.dart';
+import 'package:flick_pulse/screens/widgets/custom_grid.dart';
 
 class TvScreen extends StatelessWidget {
-  final TVController _controller = Get.put(TVController());
+  final TvController tvController = Get.put(TvController());
 
   TvScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TV Shows'),
-      ),
       body: Obx(() {
-        if (_controller.isLoading.value && _controller.tvShowsList.isEmpty) {
-          return const CustomCircularProgress();
-        } else {
-          return ListView.builder(
-            itemCount: _controller.tvShowsList.length,
-            itemBuilder: (context, index) {
-              final tvShow = _controller.tvShowsList[index];
-              return ListTile(
-                leading: tvShow.posterPath.isNotEmpty
-                    ? Image.network(
-                        'https://image.tmdb.org/t/p/w500${tvShow.posterPath}')
-                    : null,
-                title: Text(tvShow.name),
-                subtitle: Text(tvShow.overview),
-                onTap: () {},
-              );
-            },
-          );
-        }
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Column(
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Wrap(
+                  spacing: 8.0,
+                  children: [
+                    CustomChoiceChip<TvCategory>(
+                      selectedCategory: tvController.selectedCategory,
+                      onCategorySelected: (category) {
+                        tvController.changeCategory(category);
+                      },
+                      icon: Icons.people,
+                      category: TvCategory.popular,
+                      label: "Most Popular",
+                    ),
+                    CustomChoiceChip<TvCategory>(
+                      selectedCategory: tvController.selectedCategory,
+                      onCategorySelected: (category) {
+                        tvController.changeCategory(category);
+                      },
+                      icon: Icons.star,
+                      category: TvCategory.topRated,
+                      label: "Top Rated",
+                    ),
+                    CustomChoiceChip<TvCategory>(
+                      selectedCategory: tvController.selectedCategory,
+                      onCategorySelected: (category) {
+                        tvController.changeCategory(category);
+                      },
+                      icon: Icons.live_tv,
+                      category: TvCategory.airingToday,
+                      label: "Airing Today",
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: tvController.isLoading.value &&
+                        tvController.tvShowsList.isEmpty
+                    ? const CustomCircularProgress()
+                    : CustomGrid<Tv>(
+                        scrollController: tvController.scrollController,
+                        itemList: tvController.tvShowsList,
+                        isLoading: tvController.isLoading.value,
+                        getPosterPath: (tvShow) => tvShow.posterPath,
+                      ),
+              ),
+            ],
+          ),
+        );
       }),
     );
   }
