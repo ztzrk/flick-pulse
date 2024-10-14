@@ -1,4 +1,4 @@
-import 'package:flick_pulse/controllers/main_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flick_pulse/models/movie_model.dart';
 import 'package:flick_pulse/services/movies_service.dart';
@@ -11,15 +11,26 @@ class MoviesController extends GetxController {
   var selectedCategory = MovieCategory.popular.obs;
   var currentPage = 1;
   var hasMorePages = true.obs;
+  late ScrollController scrollController;
 
   @override
   void onInit() {
     super.onInit();
+    scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
     fetchMovies();
   }
 
-  // Method to fetch movies
-  void fetchMovies({bool isLoadMore = false}) async {
+  void _scrollListener() {
+    if (scrollController.position.pixels >=
+            scrollController.position.maxScrollExtent - 200 &&
+        !isLoading.value &&
+        hasMorePages.value) {
+      fetchMovies(isLoadMore: true);
+    }
+  }
+
+  Future<void> fetchMovies({bool isLoadMore = false}) async {
     if (isLoading.value || (!isLoadMore && !hasMorePages.value)) return;
 
     isLoading.value = true;
@@ -62,9 +73,18 @@ class MoviesController extends GetxController {
   void changeCategory(MovieCategory category) {
     if (selectedCategory.value != category) {
       selectedCategory.value = category;
+
+      if (scrollController.hasClients) {
+        scrollController.jumpTo(0);
+      }
+      moviesList.clear();
       fetchMovies();
-      final MainController mainController = Get.find<MainController>();
-      mainController.scrollToTop();
     }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 }
